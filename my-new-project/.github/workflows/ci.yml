@@ -1,0 +1,53 @@
+name: CI for Vite + React
+
+# Запуск CI на push и pull request в ветку main
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Переменные окружения
+env:
+  NODE_VERSION: '18' # Версия Node.js (Vite рекомендует Node 14+)
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Чекаут репозитория
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Установка Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm' # Кэширование npm для ускорения
+
+      # Установка зависимостей
+      - name: Install dependencies
+        run: npm ci
+
+      # Проверка линтинга (ESLint)
+      - name: Run ESLint
+        run: npm run lint
+        if: always() # Выполняется даже при ошибках в предыдущих шагах
+
+      # Сборка проекта
+      - name: Build project
+        run: npm run build
+
+      # Запуск тестов (Vitest)
+      - name: Run tests
+        run: npm run test
+        if: always() # Выполняется даже при ошибках сборки
+
+      # (Опционально) Проверка размера сборки
+      - name: Check build size
+        run: ls -lh dist/
+        if: success() # Выполняется только при успешной сборке
