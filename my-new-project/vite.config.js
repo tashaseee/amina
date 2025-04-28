@@ -3,8 +3,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
+  base: 'amina', // Замените на имя вашего репозитория
   server: {
-    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg'],
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.glb'], // Добавлен .glb
     port: 5181,
     proxy: {
       '/api': {
@@ -12,8 +13,7 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
         ws: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api') // Сохраняем /api в пути
-      }
-    }
-  }
+      },
+    },
+  },
 });
