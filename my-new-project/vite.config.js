@@ -3,9 +3,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: 'amina', // Замените на имя вашего репозитория
+  base: '/amina/',
   server: {
-    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.glb'], // Добавлен .glb
+    assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.glb'],
     port: 5181,
     proxy: {
       '/api': {
